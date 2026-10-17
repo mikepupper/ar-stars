@@ -42,7 +42,7 @@ const STAR_PTS = Array.from({ length: 10 }, (_, i) => {
   const r = i % 2 ? 0.5 : 1, a = -Math.PI / 2 + (i * Math.PI) / 5;
   return [r * Math.cos(a), r * Math.sin(a)];
 });
-const ROUND = 0.22; // grosor del trazo redondeado relativo al radio
+const ROUND = 0.32; // grosor del trazo redondeado relativo al radio
 
 const withAlpha = (hex, a) => {
   const n = parseInt(hex.slice(1), 16);
@@ -97,7 +97,7 @@ function drawStar(c, f, tilt, color) {
 // Íconos de los swatches con la misma geometría.
 document.querySelectorAll('.ar-swatch').forEach((b) => {
   const d = STAR_PTS.map(([x, y], i) => `${i ? 'L' : 'M'}${(x * 10).toFixed(2)} ${(y * 10).toFixed(2)}`).join('') + 'Z';
-  b.innerHTML = `<svg viewBox="-12 -12 24 24"><path d="${d}" fill="currentColor" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
+  b.innerHTML = `<svg viewBox="-12 -12 24 24"><path d="${d}" fill="currentColor" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg>`;
 });
 
 // Estado: cada estrella queda pegada a un landmark de la malla (sin offset → nunca se despega de la piel).

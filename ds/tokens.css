@@ -394,6 +394,6 @@
      (las lee JS). Estrella real: 10–12 mm → 11 mm. Escala = distancia
      interpupilar adulta promedio (~63 mm), medida con el iris de MediaPipe.
      ============================================================ */
-  --ar-star-size-mm: 11;
+  --ar-star-size-mm: 12.1; /* 11 mm +10% (pedido 2026-10-17) */
   --ar-ipd-mm: 63;
 }
