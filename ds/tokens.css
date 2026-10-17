@@ -1,0 +1,399 @@
+/*
+  Sweet Skincare Design System — Design Tokens
+  Fuente: figma-design-system.json (Figma file lKP2HrIL2lLifFHWlsAwVm)
+  + inspección directa de nodos vía Figma REST API (para spacing, radius,
+    line-height y 3 colores de Stars que no estaban en el JSON original).
+
+  Regla: ningún componente debe usar un valor de color/tipografía/spacing/radio
+  que no esté definido aquí como variable.
+*/
+
+/* Google Fonts — familias reales usadas en figma-design-system.json > typography.
+   Pesos cargados: Urbanist 400/600/700 (todos los usados en las variables --text-*-weight),
+   Rubik One 400 (única variante que Google Fonts ofrece de esta familia). */
+@import url('https://fonts.googleapis.com/css2?family=Rubik+One&family=Urbanist:wght@400;600;700&display=swap');
+
+:root {
+  /* ============================================================
+     COLOR — Primary Pink
+     Fuente: figma-design-system.json > colorPalettes["Primary Pink"]
+     ============================================================ */
+  --primary-pink-100: #FFFAFF;
+  --primary-pink-200: #FFF2FF;
+  --primary-pink-300: #FFE5FE;
+  --primary-pink-400: #FFD5FE;
+  --primary-pink-500: #FFBCFD;
+  --primary-pink-600: #D19ACF;
+  --primary-pink-700: #9E749D;
+  --primary-pink-800: #6B4F6A;
+  --primary-pink-900: #3D2D3D;
+
+  /* ============================================================
+     COLOR — Black
+     Fuente: figma-design-system.json > colorPalettes["Black"]
+     ============================================================ */
+  --black-100: #EFEFEF;
+  --black-200: #D8D8D8;
+  --black-300: #B5B5B5;
+  --black-400: #868686;
+  --black-500: #3B3B3B;
+  --black-600: #313131;
+  --black-700: #252525;
+  --black-800: #191919;
+  --black-900: #0E0E0E;
+
+  /* ============================================================
+     COLOR — Violet
+     Fuente: figma-design-system.json > colorPalettes["Violet"]
+     ============================================================ */
+  --violet-100: #FDFAFF;
+  --violet-200: #F9F2FF;
+  --violet-300: #F3E6FF;
+  --violet-400: #ECD5FF;
+  --violet-500: #E0BCFF;
+  --violet-600: #B89AD1;
+  --violet-700: #8B759E;
+  --violet-800: #5E4F6B;
+  --violet-900: #362D3D;
+
+  /* ============================================================
+     COLOR — Pink
+     Fuente: figma-design-system.json > colorPalettes["Pink"]
+     ============================================================ */
+  --pink-100: #FEFDFE;
+  --pink-200: #FEF9FD;
+  --pink-300: #FCF4FC;
+  --pink-400: #FBEEF9;
+  --pink-500: #F8E3F6;
+  --pink-600: #CBBACA;
+  --pink-700: #9A8D99;
+  --pink-800: #685F67;
+  --pink-900: #3C363B;
+
+  /* ============================================================
+     COLOR — White
+     Fuente: figma-design-system.json > colorPalettes["White"]
+     ============================================================ */
+  --white-100: #FFFFFF;
+  --white-200: #FFFFFF;
+  --white-300: #FFFFFF;
+  --white-400: #FFFFFF;
+  --white-500: #FFFFFF;
+  --white-600: #D1D1D1;
+  --white-700: #9E9E9E;
+  --white-800: #6B6B6B;
+  --white-900: #3D3D3D;
+
+  /* ============================================================
+     COLOR — Success
+     Fuente: figma-design-system.json > colorPalettes["Success"]
+     ============================================================ */
+  --success-100: #EDFAF2;
+  --success-200: #D3F3DF;
+  --success-300: #ABE9C2;
+  --success-400: #76DB9B;
+  --success-500: #22C55E;
+  --success-600: #1CA24D;
+  --success-700: #157A3A;
+  --success-800: #0E5328;
+  --success-900: #082F17;
+
+  /* ============================================================
+     COLOR — Error
+     Fuente: figma-design-system.json > colorPalettes["Error"]
+     ============================================================ */
+  --error-100: #FEF0F0;
+  --error-200: #FCDADA;
+  --error-300: #F9B8B8;
+  --error-400: #F58B8B;
+  --error-500: #EF4444;
+  --error-600: #C43838;
+  --error-700: #942A2A;
+  --error-800: #641D1D;
+  --error-900: #391010;
+
+  /* ============================================================
+     COLOR — Warning
+     Fuente: figma-design-system.json > colorPalettes["Warning"]
+     ============================================================ */
+  --warning-100: #FEF7EB;
+  --warning-200: #FDECCE;
+  --warning-300: #FBDAA2;
+  --warning-400: #F9C368;
+  --warning-500: #F59E0B;
+  --warning-600: #C98209;
+  --warning-700: #986207;
+  --warning-800: #674205;
+  --warning-900: #3B2603;
+
+  /* ============================================================
+     COLOR — Stars
+     Fuente: NO estaba en figma-design-system.json (solo el style key).
+     Recuperado por inspección directa del nodo del componente "star"
+     vía Figma REST API (/v1/files/:key/nodes).
+     ============================================================ */
+  --stars-yellow: #F5ED7C; /* Decisión de diseño (2026-09-29): reemplaza el #FFEC00 de Stars/Yellow en Figma. */
+  --stars-blue: #6B9FFF;
+  --stars-light-blue: #A5ECFF;
+
+  /* ============================================================
+     COLOR — Extendidos (NO existen como Variable/Style en Figma)
+     Encontrados por inspección de nodo en componentes puntuales.
+     El archivo de Figma los usa "sueltos" sin token detrás.
+     Se documentan aquí como variable (nunca hardcodeados en un
+     componente) para que quede explícito qué falta tokenizar
+     en el archivo de Figma original.
+     ============================================================ */
+  --select-icon-gray: #7D7D7D;       /* Select > icon (todos los estados) */
+  --select-disabled-bg: #F2F2F2;     /* Select > State=Disabled > fondo */
+  --select-disabled-placeholder: #BABABA; /* Select > State=Disabled > placeholder */
+  --select-disabled-border: #E0E0E0; /* Select > State=Disabled > borde */
+  --select-focus-border: #9E759E;    /* Select > State=Focus / State=Open > borde */
+  --select-error-border: #E06666;    /* Select > State=Error > borde */
+  --input-disabled-border: #B6B6B6;  /* Input > State=Disabled > borde */
+  --card-slot-fill: #999999;         /* Card > _Slot (placeholder de contenido vacío de Figma) */
+  --card-slot-stroke: #808080;       /* Card > _Slot (placeholder de contenido vacío de Figma) */
+
+  /* ============================================================
+     TYPOGRAPHY — familias
+     ============================================================ */
+  --font-urbanist: 'Urbanist', sans-serif;
+  --font-rubik-one: 'Rubik One', sans-serif;
+
+  /* ============================================================
+     TYPOGRAPHY — tamaños / pesos / line-height por rol
+     Fuente: figma-design-system.json > typography (tamaño/familia/peso)
+     + line-height, peso numérico y letter-spacing recuperados por
+     inspección directa de los 15 nodos de estilo de texto vía API
+     (el JSON original no traía line-height).
+     ============================================================ */
+  --text-display-family: var(--font-urbanist);
+  --text-display-weight: 700;
+  --text-display-size: 48px;
+  --text-display-line-height: 56px;
+
+  --text-display-2-family: var(--font-rubik-one);
+  --text-display-2-weight: 400;
+  --text-display-2-size: 40px;
+  --text-display-2-line-height: 40px;
+  --text-display-2-case: uppercase;
+
+  --text-heading-1-family: var(--font-rubik-one);
+  --text-heading-1-weight: 400;
+  --text-heading-1-size: 32px;
+  --text-heading-1-line-height: 40px;
+  --text-heading-1-case: uppercase;
+
+  --text-heading-2-family: var(--font-rubik-one);
+  --text-heading-2-weight: 400;
+  --text-heading-2-size: 20px;
+  --text-heading-2-line-height: 32px;
+  --text-heading-2-case: uppercase;
+
+  --text-subtitle-1-family: var(--font-urbanist);
+  --text-subtitle-1-weight: 700;
+  --text-subtitle-1-size: 24px;
+  --text-subtitle-1-line-height: 32px;
+
+  --text-subtitle-2-family: var(--font-urbanist);
+  --text-subtitle-2-weight: 400;
+  --text-subtitle-2-size: 18px;
+  --text-subtitle-2-line-height: 28px;
+
+  --text-body-bold-family: var(--font-urbanist);
+  --text-body-bold-weight: 700;
+  --text-body-bold-size: 16px;
+  --text-body-bold-line-height: 22.4px;
+
+  --text-body-family: var(--font-urbanist);
+  --text-body-weight: 400;
+  --text-body-size: 16px;
+  --text-body-line-height: 22.4px;
+
+  --text-button-family: var(--font-urbanist);
+  --text-button-weight: 700;
+  --text-button-size: 16px;
+  --text-button-line-height: 24px;
+  --text-button-case: uppercase;
+
+  --text-overline-family: var(--font-urbanist);
+  --text-overline-weight: 700;
+  --text-overline-size: 14px;
+  --text-overline-line-height: 20px;
+  --text-overline-case: uppercase;
+
+  --text-link-family: var(--font-urbanist);
+  --text-link-weight: 400;
+  --text-link-size: 14px;
+  --text-link-line-height: 20px;
+
+  --text-link-2-family: var(--font-urbanist);
+  --text-link-2-weight: 700;
+  --text-link-2-size: 14px;
+  --text-link-2-line-height: 20px;
+  --text-link-2-case: uppercase;
+
+  --text-badge-family: var(--font-urbanist);
+  --text-badge-weight: 600;
+  --text-badge-size: 11px;
+  --text-badge-line-height: 16px;
+
+  --text-badge-mini-family: var(--font-urbanist);
+  --text-badge-mini-weight: 700;
+  --text-badge-mini-size: 11px;
+  --text-badge-mini-line-height: 16px;
+
+  --text-caption-family: var(--font-urbanist);
+  --text-caption-weight: 400;
+  --text-caption-size: 12px;
+  --text-caption-line-height: 16px;
+
+  /* Tamaños de composición para el patrón how-to nuevo.
+     Fuente: propuestas responsive de “¿Cómo se usa?” (2026-09-28). */
+  --size-how-to-section-min-height: 22rem;
+  --size-how-to-strip: 12rem;
+  --size-preview-mobile-width: 23.4375rem;
+  --size-preview-desktop-min-width: 48rem;
+  /* Extensiones de composición how-to, 2026-09-28: escala editorial
+     para las propuestas Editorial / Lectura continua.
+     Son decisiones de esta exploración, no estilos publicados en Figma. */
+  --howto-review-width: 1500px;
+  --howto-title-size: 56px;
+  --howto-title-leading: 56px;
+  --howto-tight-tracking: -0.035em; /* Ajuste óptico de titulares Rubik One. */
+  /* Entregable Editorial responsive: interpolación por ancho del contenedor.
+     Límites tomados de las vistas aprobadas (24–32 padding, 32–40 titulares,
+     64–80 círculo y 32–40 icono). No son nuevos estilos de Figma. */
+  --howto-fluid-padding: clamp(var(--space-24), 3cqi, var(--space-32));
+  --howto-fluid-heading-size: clamp(var(--text-heading-1-size), 4cqi, var(--text-display-2-size));
+  --howto-fluid-title-gap: clamp(var(--space-24), 4cqi, var(--space-40));
+  --howto-fluid-icon-size: clamp(calc(var(--space-32) * 2), 8cqi, calc(var(--space-40) * 2));
+  --howto-fluid-glyph-size: clamp(var(--space-32), 4cqi, var(--space-40));
+
+  /* ============================================================
+     TYPOGRAPHY — campos de formulario (Select / Input / Number Input)
+     NO son un estilo de texto publicado en Figma (sin nombre propio,
+     sin key en styles.text) — son overrides locales repetidos de forma
+     idéntica en los 3 componentes de formulario inspeccionados vía API.
+     Se documentan aquí para no hardcodear el mismo valor 3 veces.
+     ============================================================ */
+  --text-field-label-family: var(--font-urbanist);
+  --text-field-label-weight: 700;
+  --text-field-label-size: 13px;
+  --text-field-label-line-height: 15.6px;
+
+  --text-field-value-family: var(--font-urbanist);
+  --text-field-value-weight: 400;
+  --text-field-value-size: 14px;
+  --text-field-value-line-height: 16.8px;
+
+  --text-field-help-family: var(--font-urbanist);
+  --text-field-help-weight: 400;
+  --text-field-help-size: 11px;
+  --text-field-help-line-height: 13.2px;
+
+  /* Number Input — label del stepper (+/-). Tampoco es un estilo publicado. */
+  --text-stepper-label-family: var(--font-urbanist);
+  --text-stepper-label-weight: 700;
+  --text-stepper-label-size: 14px;
+  --text-stepper-label-line-height: 16.8px;
+  --text-stepper-label-case: uppercase;
+
+  /* Footer — franja legal. Tampoco es un estilo publicado. */
+  --text-legal-family: var(--font-urbanist);
+  --text-legal-weight: 400;
+  --text-legal-size: 12px;
+  --text-legal-line-height: 16px;
+
+  /* ============================================================
+     SPACING
+     NO existe una escala de spacing documentada en Figma (ni
+     Variable ni Style). Estos son TODOS los valores de padding /
+     gap realmente usados en los 86 nodos de componente inspeccionados
+     vía API, deduplicados. Nombrados por su valor en px, no por
+     una escala inventada (ej. no asumimos base-8 porque el archivo
+     no la respeta consistentemente).
+     ============================================================ */
+  --space-2: 2px;
+  --space-3: 3px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-9: 9px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-17: 17px;
+  --space-18: 18px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-26: 26px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-40: 40px;
+
+  /* Mailing identity — escala semántica derivada de la retícula base de 40px.
+     Fuente: calibración visual del header universal Sweet (2026-09-11). */
+  --mailing-logo-desktop: 160px;
+  --mailing-logo-mobile: 120px;
+  --mailing-canvas-width: 600px;
+  --mailing-header-height: 160px;
+  /* Ultra Star — composición HTML mobile, 2026-09-24.
+     Extensiones de layout, no estilos publicados en Figma. La escala del
+     nivel se ajusta al ancho del correo; familias y colores siguen el DS. */
+  --mailing-mobile-width: 390px;
+  --mailing-review-width: 1280px;
+  --mailing-footer-logo-width: 140px; /* delivery-option-1/snippets/footer.html */
+  --mailing-tier-size: clamp(48px, 20cqi, 96px);
+  --mailing-tier-line-height: 0.96;
+  --mailing-hero-star-size: clamp(58px, 22cqi, 112px);
+  --mailing-social-size: 48px; /* delivery-option-1/snippets/footer.html */
+
+  /* ============================================================
+     RADIUS
+     Todos los cornerRadius realmente usados en los componentes
+     inspeccionados vía API. No existe escala documentada en Figma.
+     ============================================================ */
+  --radius-4: 4px;
+  --radius-10: 10px;
+  --radius-24: 24px;
+  --radius-48: 48px;
+  --radius-79: 79px;   /* pill de Button (Figma clampea visualmente a la mitad del alto) */
+  --radius-pill: 999px; /* pill explícito, usado en Points Chip */
+
+  /* ============================================================
+     BORDER WIDTH
+     Valores de strokeWeight observados en los componentes.
+     ============================================================ */
+  --border-0: 0px;
+  --border-1: 1px;
+  --border-2: 2px;
+  --border-4: 4px;
+  --border-6: 6px;
+
+  /* ============================================================
+     EFFECTS
+     Fuente: confirmado vía get_variable_defs — el efecto está ligado a
+     4 variables numéricas independientes (no solo al style "Shadow"):
+     shadow/hard/offset-x=8, shadow/hard/offset-y=8, shadow/hard/blur=0,
+     shadow/hard/spread=0, color=Black/500. Usado en Card (Type=Main) y
+     Product Card (Type=bold) únicamente — Type=light/Simple/Secondary
+     y Type=light/Huge de Product Card NO tienen sombra (effects: []).
+     ============================================================ */
+  --shadow-hard-offset-x: 8px;  /* shadow/hard/offset-x */
+  --shadow-hard-offset-y: 8px;  /* shadow/hard/offset-y */
+  --shadow-hard-blur: 0px;      /* shadow/hard/blur */
+  --shadow-hard-spread: 0px;    /* shadow/hard/spread */
+  --shadow-hard: var(--shadow-hard-offset-x) var(--shadow-hard-offset-y) var(--shadow-hard-blur) var(--shadow-hard-spread) var(--black-500);
+
+  /* Header usa un blur de fondo (glassmorphism), sin color propio */
+  --blur-24: 24px;
+
+  /* ============================================================
+     AR try-on (POC pages/ar-stars). Medidas físicas en mm, sin unidad
+     (las lee JS). Estrella real: 10–12 mm → 11 mm. Escala = distancia
+     interpupilar adulta promedio (~63 mm), medida con el iris de MediaPipe.
+     ============================================================ */
+  --ar-star-size-mm: 11;
+  --ar-ipd-mm: 63;
+}

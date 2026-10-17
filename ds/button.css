@@ -1,0 +1,105 @@
+/*
+  Button — Sweet Skincare Design System
+  Fuente: nodos Figma 45:557–45:571 (Size=Default), 239:1870–251:498 (Size=Small)
+  página "Buttons". 16 combinaciones: Hierarchy × State × Size.
+  Nota: Hover en Secondary/Default usa un fondo distinto (--violet-100) al de
+  Secondary/Small (--white-500) — es así en el archivo de Figma original,
+  se respeta tal cual en vez de forzar consistencia entre tamaños.
+*/
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-79);
+  border-style: solid;
+  cursor: pointer;
+  font-family: var(--text-button-family);
+  font-weight: var(--text-button-weight);
+  font-size: var(--text-button-size);
+  line-height: var(--text-button-line-height);
+  text-transform: var(--text-button-case);
+}
+
+.btn:disabled,
+.btn[data-state="disabled"] {
+  cursor: not-allowed;
+}
+
+/* ===== Size = Default ===== */
+.btn--default {
+  padding: var(--space-16) var(--space-32);
+  border-width: var(--border-2);
+}
+
+/* ===== Size = Small ===== */
+.btn--small {
+  padding: var(--space-12) var(--space-16);
+  border-width: var(--border-1);
+}
+
+/* ===== Hierarchy = Primary ===== */
+.btn[data-hierarchy="primary"][data-state="idle"] {
+  background: var(--primary-pink-500);
+  border-color: var(--black-500);
+  color: var(--black-500);
+}
+.btn[data-hierarchy="primary"][data-state="hover"] {
+  background: var(--primary-pink-300);
+  border-color: var(--black-500);
+  color: var(--black-500);
+}
+.btn[data-hierarchy="primary"][data-state="pressed"] {
+  background: var(--primary-pink-700);
+  border-color: var(--black-500);
+  /* harden: Black/500 sobre Primary Pink/700 da 2.9:1 (falla AA 4.5:1) —
+     Black/800 pasa (4.55:1). data-state="disabled" abajo usa Black/400 sobre
+     Primary Pink/400 (2.8:1); eso queda intacto porque WCAG 1.4.3 exime
+     componentes inactivos, este caso es distinto: pressed es un estado activo. */
+  color: var(--black-800);
+}
+.btn[data-hierarchy="primary"][data-state="disabled"] {
+  background: var(--primary-pink-400);
+  border-color: var(--black-400);
+  color: var(--black-400);
+}
+
+/* ===== Hierarchy = Secondary, Size = Default ===== */
+.btn--default[data-hierarchy="secondary"][data-state="idle"] {
+  background: var(--white-500);
+  border-color: var(--black-500);
+  color: var(--black-500);
+}
+.btn--default[data-hierarchy="secondary"][data-state="hover"] {
+  background: var(--violet-100);
+  border-color: var(--black-500);
+  color: var(--black-500);
+}
+.btn--default[data-hierarchy="secondary"][data-state="pressed"] {
+  background: var(--white-600);
+  border-color: var(--black-500);
+  color: var(--black-500);
+}
+.btn--default[data-hierarchy="secondary"][data-state="disabled"] {
+  background: var(--white-500);
+  border-color: var(--black-300);
+  color: var(--black-300);
+}
+
+/* ===== Hierarchy = Secondary, Size = Small ===== */
+.btn--small[data-hierarchy="secondary"][data-state="idle"],
+.btn--small[data-hierarchy="secondary"][data-state="hover"] {
+  background: var(--white-500);
+  border-color: var(--black-500);
+  color: var(--black-500);
+}
+.btn--small[data-hierarchy="secondary"][data-state="pressed"] {
+  background: var(--white-600);
+  border-color: var(--black-500);
+  color: var(--black-500);
+}
+.btn--small[data-hierarchy="secondary"][data-state="disabled"] {
+  background: var(--white-500);
+  border-color: var(--black-300);
+  color: var(--black-300);
+}

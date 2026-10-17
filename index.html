@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Sweet Patch — Pruébate las estrellitas</title>
+<link rel="stylesheet" href="ds/tokens.css" />
+<link rel="stylesheet" href="ds/button.css" />
+<link rel="stylesheet" href="ar.css" />
+</head>
+<body>
+  <main class="ar">
+    <canvas id="stage" class="ar-stage"></canvas>
+    <video id="cam" playsinline muted></video>
+
+    <section class="ar-intro" id="intro">
+      <h1 class="ar-title">Pruébate las estrellitas</h1>
+      <p class="ar-copy">Toca tu cara para pegar una estrellita. Se ven a tamaño real (11&nbsp;mm).</p>
+      <button id="start" class="btn btn--default" data-hierarchy="primary" data-state="idle">Abrir cámara</button>
+      <p class="ar-status" id="status" role="status"></p>
+    </section>
+
+    <nav class="ar-toolbar" id="toolbar" hidden>
+      <div class="ar-swatches">
+        <button class="ar-swatch" data-color="black" aria-label="Negro" aria-pressed="true"></button>
+        <button class="ar-swatch" data-color="pink" aria-label="Rosa" aria-pressed="false"></button>
+        <button class="ar-swatch" data-color="yellow" aria-label="Amarillo" aria-pressed="false"></button>
+        <button class="ar-swatch" data-color="blue" aria-label="Azul" aria-pressed="false"></button>
+        <button class="ar-swatch" data-color="light-blue" aria-label="Celeste" aria-pressed="false"></button>
+      </div>
+      <div class="ar-actions">
+        <button id="undo" class="btn btn--small" data-hierarchy="secondary" data-state="idle">Deshacer</button>
+        <button id="clear" class="btn btn--small" data-hierarchy="secondary" data-state="idle">Borrar</button>
+        <button id="shot" class="btn btn--small" data-hierarchy="primary" data-state="idle">Foto</button>
+      </div>
+    </nav>
+  </main>
+  <script type="module" src="ar.js"></script>
+</body>
+</html>
