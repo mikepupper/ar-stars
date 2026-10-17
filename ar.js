@@ -1,5 +1,5 @@
-// AR try-on de estrellitas (POC). MediaPipe Face Landmarker + canvas.
-import { FaceLandmarker, FilesetResolver } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs';
+// AR try-on de estrellitas (POC). MediaPipe Face + Hand Landmarker + canvas.
+import { FaceLandmarker, HandLandmarker, FilesetResolver } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs';
 
 const css = getComputedStyle(document.documentElement);
 const token = (name) => css.getPropertyValue(name).trim();
@@ -13,6 +13,12 @@ const COLORS = {
   'light-blue': token('--stars-light-blue'),
 };
 const WHITE = token('--white-100');
+const PINK = token('--primary-pink-500');
+// Dedo: dejarlo quieto sobre la cara DWELL_MS para pegar una estrella.
+const DWELL_MS = 700;
+const STILL_MM = 6;    // tolerancia de movimiento mientras se mantiene
+const SPACING_MM = 8;  // no pegar encima de otra estrella
+const INDEX_TIP = 8;   // punta del índice en HandLandmarker
 const IRIS_R = 468, IRIS_L = 473; // centros de iris
 const FACE_POINTS = 468;          // landmarks de malla (sin iris)
 // Contorno de la cara (FACEMESH_FACE_OVAL de MediaPipe), para no pegar fuera de la piel.
@@ -169,9 +175,26 @@ function render() {
     const f = skinFrame(s);
     if (f.alpha > 0) drawStar(ctx, f, s.tilt, COLORS[s.color]);
   }
+  drawDwell();
 }
 
-let landmarker, lastT = -1;
+// Anillo de progreso en la punta del dedo mientras se mantiene sobre la cara.
+function drawDwell() {
+  if (!dwell.pos || dwell.fired || !face) return;
+  const k = Math.min(1, (performance.now() - dwell.start) / DWELL_MS);
+  const r = STAR_MM * 1.5 * face.ppm; // ~16 mm de radio: se ve alrededor del dedo
+  ctx.save();
+  ctx.lineWidth = r * 0.2; ctx.lineCap = 'round';
+  ctx.strokeStyle = withAlpha(COLORS.black, 0.35); // pista oscura para contraste sobre la piel
+  ctx.beginPath(); ctx.arc(dwell.pos[0], dwell.pos[1], r, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = PINK;
+  ctx.beginPath(); ctx.arc(dwell.pos[0], dwell.pos[1], r, -Math.PI / 2, -Math.PI / 2 + k * Math.PI * 2); ctx.stroke();
+  ctx.restore();
+}
+
+let landmarker, handmarker, lastT = -1, frame = 0;
+let dwell = { pos: null, start: 0, fired: false };
+
 function loop() {
   if (video.readyState >= 2) {
     if (!view.dw) layout();
@@ -179,6 +202,8 @@ function loop() {
     if (t !== lastT) {
       const r = landmarker.detectForVideo(video, t);
       face = r.faceLandmarks?.[0] ? readFace(r.faceLandmarks[0]) : null;
+      // Manos cada 2 frames para no castigar el rendimiento en el teléfono.
+      if (handmarker && frame++ % 2 === 0) trackFinger(handmarker.detectForVideo(video, t), t);
       lastT = t;
     }
     render();
@@ -186,19 +211,37 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-// Tocar la cara: solo dentro del contorno; se pega al landmark más cercano.
-canvas.addEventListener('pointerdown', (e) => {
-  if (!face) return;
-  const r = canvas.getBoundingClientRect();
-  const px = ((e.clientX - r.left) * canvas.width) / r.width;
-  const py = ((e.clientY - r.top) * canvas.height) / r.height;
-  if (!insideFace(face.pts, px, py)) return;
+// Punta del índice sobre la cara y quieta DWELL_MS → pega una estrella ahí.
+function trackFinger(res, t) {
+  const hand = res.landmarks?.[0];
+  const tip = hand && toCanvas(hand[INDEX_TIP]);
+  if (!face || !tip || !insideFace(face.pts, tip[0], tip[1])) { dwell = { pos: null, start: 0, fired: false }; return; }
+  const moved = dwell.pos ? Math.hypot(tip[0] - dwell.pos[0], tip[1] - dwell.pos[1]) / face.ppm : Infinity;
+  if (moved > STILL_MM) { dwell = { pos: tip, start: t, fired: false }; return; }
+  if (!dwell.fired && t - dwell.start >= DWELL_MS) {
+    dwell.fired = true; // no vuelve a pegar hasta que el dedo se mueva
+    placeAt(dwell.pos[0], dwell.pos[1]);
+  }
+}
+
+// Pega una estrella en el landmark más cercano a (px, py), si está dentro de la cara.
+function placeAt(px, py) {
+  if (!face || !insideFace(face.pts, px, py)) return;
   let best = -1, bd = Infinity;
   for (let i = 0; i < FACE_POINTS; i++) {
     const d = (face.pts[i][0] - px) ** 2 + (face.pts[i][1] - py) ** 2;
     if (d < bd) { bd = d; best = i; }
   }
+  const p = face.pts[best];
+  if (stars.some((s) => Math.hypot(...sub(face.pts[s.idx], p)) / face.ppm < SPACING_MM)) return;
   stars.push({ idx: best, tilt: (Math.random() - 0.5) * 0.6, color });
+  navigator.vibrate?.(15);
+}
+
+// Tocar la pantalla también sirve.
+canvas.addEventListener('pointerdown', (e) => {
+  const r = canvas.getBoundingClientRect();
+  placeAt(((e.clientX - r.left) * canvas.width) / r.width, ((e.clientY - r.top) * canvas.height) / r.height);
 });
 document.querySelectorAll('.ar-swatch').forEach((b) => b.addEventListener('click', () => {
   color = b.dataset.color;
@@ -230,6 +273,14 @@ $('start').onclick = async () => {
       },
       runningMode: 'VIDEO', numFaces: 1,
     });
+    // Si el modelo de manos falla, la app sigue funcionando con toques.
+    handmarker = await HandLandmarker.createFromOptions(files, {
+      baseOptions: {
+        modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
+        delegate: 'GPU',
+      },
+      runningMode: 'VIDEO', numHands: 1,
+    }).catch(() => null);
     addEventListener('resize', layout);
     video.addEventListener('resize', layout);
     $('intro').hidden = true; $('toolbar').hidden = false;
